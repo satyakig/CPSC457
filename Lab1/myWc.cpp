@@ -31,8 +31,6 @@ int main (int argc, char * const argv[])
   }
   else {
     filename = argv[1];
-	cout << argv[0] << endl;
-	cout << argv[1] << endl;
   }
   
   // open the file for reading
