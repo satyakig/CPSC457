@@ -34,8 +34,8 @@ int main (int argc, char *const argv[])
   }
   
   int count = 0;
-
   ifstream file(filename);
+  
   if(file.is_open()) {
     string line;
     while (getline(file, line))
@@ -46,20 +46,6 @@ int main (int argc, char *const argv[])
     exit(-1);
   }
   file.close();  
-
-  // int fd = open(filename.c_str(), O_RDONLY);
-  // if(fd < 0) {
-  //   cerr << "Could not open file " << filename << "\n";
-  //   exit(-1);
-  // }
-
-  // while(1) {
-  //   char c;
-  //   if(read(fd, &c, 1) < 1) break;
-  //   if(c == '\n') count ++;
-  // }
-  // close(fd);
-
   cout << count << " " << filename << "\n";
 
   return 0;
