@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include <string>
 #include <iostream>
+#include <fstream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -21,9 +22,8 @@
 
 using namespace std;
 
-int main (int argc, char * const argv[])
+int main (int argc, char *const argv[])
 {
-  // get the file name from command line
   string filename;
   if (argc != 2) {
     cerr << "Usage: readFile <input file> " << endl;
@@ -33,25 +33,34 @@ int main (int argc, char * const argv[])
     filename = argv[1];
   }
   
-  // open the file for reading
-  int fd = open( filename.c_str(), O_RDONLY);
-  if( fd < 0) {
+  int count = 0;
+
+  ifstream file(filename);
+  if(file.is_open()) {
+    string line;
+    while (getline(file, line))
+      ++count;
+  }
+  else {
     cerr << "Could not open file " << filename << "\n";
     exit(-1);
   }
+  file.close();  
 
-  // read file character by character and count lines
-  int count = 0;
-  while(1) {
-    char c;
-    if( read( fd, & c, 1) < 1) break;
-    if( c == '\n') count ++;
-  }
+  // int fd = open(filename.c_str(), O_RDONLY);
+  // if(fd < 0) {
+  //   cerr << "Could not open file " << filename << "\n";
+  //   exit(-1);
+  // }
 
-  // close file and report results
-  close( fd);
+  // while(1) {
+  //   char c;
+  //   if(read(fd, &c, 1) < 1) break;
+  //   if(c == '\n') count ++;
+  // }
+  // close(fd);
+
   cout << count << " " << filename << "\n";
-  
 
   return 0;
 }
