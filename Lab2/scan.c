@@ -8,7 +8,7 @@
 #define MAX_FNAME_SIZE 512
 #define MAX_FILES 1024
 
-int main(int argc, char ** argv) {
+int main(int argc, char **argv) {
   if(argc != 3) {
     fprintf(stderr, "This program needs 2 arguments to run. The suffix of the files and the number of files to display.\n");
     exit(-1);
@@ -19,6 +19,7 @@ int main(int argc, char ** argv) {
   printf("%s + %d\n", suffix, file_no);
   
   char* cmd = strcat("find . -type f -name ", suffix);
+  printf("%s\n", cmd);
   FILE* fp = popen(cmd, "r");
   if(fp == NULL) {
     perror("popen failed:");
