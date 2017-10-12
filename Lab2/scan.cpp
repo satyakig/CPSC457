@@ -5,6 +5,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+using namespace std;
 #define MAX_FNAME_SIZE 512
 #define MAX_FILES 1024
 
@@ -14,6 +15,9 @@ int main(int argc, char ** argv) {
     fprintf(stderr, "This program needs 2 arguments to run. The suffix of the files and the number of files to display.\n");
     exit(-1);
   }
+
+  string suffix = argv[1];
+  int file_no = (int)argv[2][0]; 
   // open 'find...'
   FILE* fp = popen("find . -type f -name " + argv[1], "r");
   if(fp == NULL) {
