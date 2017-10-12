@@ -8,23 +8,23 @@
 #define MAX_FNAME_SIZE 512
 #define MAX_FILES 1024
 
-int main( int argc, char ** argv) {
+int main(int argc, char ** argv) {
   // handle command line arguments
-  if( argc != 1) {
-    fprintf(stderr, "I don't take command line arguments.\n");
+  if(argc != 3) {
+    fprintf(stderr, "This program needs 2 arguments to run. The suffix of the files and the number of files to display.\n");
     exit(-1);
   }
   // open 'find...'
-  FILE * fp = popen( "find . -type f", "r");
-  if( fp == NULL) {
+  FILE* fp = popen("find . -type f -name " + argv[1], "r");
+  if(fp == NULL) {
     perror("popen failed:");
     exit(-1);
   }
   // read in all filenames
   char buff[MAX_FNAME_SIZE];
   int nFiles = 0;
-  char * files[MAX_FILES];
-  while(fgets(buff,MAX_FNAME_SIZE,fp)) {
+  char* files[MAX_FILES];
+  while(fgets(buff, MAX_FNAME_SIZE, fp)) {
     int len = strlen(buff) - 1;
     files[nFiles] = strndup(buff,len);
     nFiles ++;
