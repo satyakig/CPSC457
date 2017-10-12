@@ -15,12 +15,14 @@ int main(int argc, char **argv) {
   }
 
   char* suffix = argv[1];
-  int file_no = atoi(argv[2]); 
+  int file_no = atoi(argv[2]);
   printf("%s + %d\n", suffix, file_no);
-  
-  char* cmd = "find . -type f -name ";
+
+  char cmd[50] = "find . -type f -name '*";
   strcat(cmd, suffix);
+  strcat(cmd, "'");
   printf("%s\n", cmd);
+
   FILE* fp = popen(cmd, "r");
   if(fp == NULL) {
     perror("popen failed:");
@@ -33,7 +35,7 @@ int main(int argc, char **argv) {
   char* files[MAX_FILES];
   while(fgets(buff, MAX_FNAME_SIZE, fp)) {
     int len = strlen(buff) - 1;
-    files[nFiles] = strndup(buff,len);
+    files[nFiles] = strdup(buff,len);
     nFiles ++;
   }
   fclose(fp);
