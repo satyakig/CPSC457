@@ -18,7 +18,8 @@ int main(int argc, char **argv) {
   int file_no = atoi(argv[2]); 
   printf("%s + %d\n", suffix, file_no);
   
-  char* cmd = strcat("find . -type f -name ", suffix);
+  char* cmd = "find . -type f -name ";
+  strcat(cmd, suffix);
   printf("%s\n", cmd);
   FILE* fp = popen(cmd, "r");
   if(fp == NULL) {
