@@ -10,7 +10,6 @@ using namespace std;
 #define MAX_FILES 1024
 
 int main(int argc, char ** argv) {
-  // handle command line arguments
   if(argc != 3) {
     fprintf(stderr, "This program needs 2 arguments to run. The suffix of the files and the number of files to display.\n");
     exit(-1);
@@ -18,12 +17,14 @@ int main(int argc, char ** argv) {
 
   string suffix = argv[1];
   int file_no = (int)argv[2][0]; 
-  // open 'find...'
-  FILE* fp = popen("find . -type f -name " + argv[1], "r");
+  print(suffix + " " + file_no + "\n");
+  
+  FILE* fp = popen("find . -type f -name " + suffix, "r");
   if(fp == NULL) {
     perror("popen failed:");
     exit(-1);
   }
+
   // read in all filenames
   char buff[MAX_FNAME_SIZE];
   int nFiles = 0;
@@ -35,6 +36,7 @@ int main(int argc, char ** argv) {
   }
   fclose(fp);
   printf("Found %d files:\n", nFiles);
+
   // get file sizes for each file and sum them up
   long long totalSize = 0;
   struct stat st;
@@ -47,6 +49,7 @@ int main(int argc, char ** argv) {
     printf("\t%s : %ld\n", files[i], st.st_size);
   }
   printf("Total size: %lld bytes.\n", totalSize);
+
   // clean up
   for(int i = 0; i < nFiles ; i ++ ) {
     free(files[i]);
