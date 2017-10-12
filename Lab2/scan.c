@@ -9,9 +9,15 @@
 #define MAX_FILES 1024
 
 struct file_info {
-  char name [MAX_FNAME_SIZE];
+  char* name;
   long long size;
 };
+
+int compare(const void *p, const void *q) {
+  long long l = ((struct file_info *)p)->size;
+  long long r = ((struct file_info *)q)->size;
+  return (l - r);
+}
 
 int main(int argc, char **argv) {
   if(argc != 3) {
@@ -37,8 +43,8 @@ int main(int argc, char **argv) {
   while(fgets(buff, MAX_FNAME_SIZE, fp)) {
     int len = strlen(buff) - 1;
     files[nFiles] = strndup(buff,len);
-    arr[nFiles] = files[nFiles];
-    nFiles ++;
+    arr[nFiles].name = files[nFiles];
+    nFiles++;
   }
   fclose(fp);
   printf("Found %d files:\n", nFiles);
@@ -51,23 +57,21 @@ int main(int argc, char **argv) {
       exit(-1);
     }
     arr[i].size = st.st_size;
-    // totalSize += st.st_size;
-    // printf("\t%s: %ld\n", files[i], st.st_size);
   }
-  // printf("Total size: %lld bytes.\n", totalSize);
 
-  // qsort();
+  qsort((void*) arr, nFiles, sizeof(arr[0]), compare);
+  int max = nFiles - fileNum;
+  if(max < 0)
+   max = 0;
 
-  for(int i = 0; i < fileNum; i++) {
-    printf("\t%s: %lld\n", arr[i].name, arr[i].size);
+  for(int i = nFiles - 1; i >= max; i--) {
+    printf("\t%s: %lld bytes.\n", arr[i].name, arr[i].size);
     totalSize += arr[i].size;
   }
-  printf("Total size: %lld bytes.\n", totalSize);
+  printf("Total Size: %lld bytes.\n", totalSize);
 
-  for(int i = 0; i < nFiles ; i ++ ) {
+  for(int i = 0; i < nFiles ; i++ ) {
     free(files[i]);
   }
   return 0;
 }
-
-// int compare();
