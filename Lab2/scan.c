@@ -5,7 +5,6 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-using namespace std;
 #define MAX_FNAME_SIZE 512
 #define MAX_FILES 1024
 
@@ -15,9 +14,9 @@ int main(int argc, char ** argv) {
     exit(-1);
   }
 
-  string suffix = argv[1];
-  int file_no = (int)argv[2][0]; 
-  print(suffix + " " + file_no + "\n");
+  char* suffix = argv[1];
+  int file_no = atoi(argv[2]); 
+  printf("%s + %d\n", suffix, file_no);
   
   FILE* fp = popen("find . -type f -name " + suffix, "r");
   if(fp == NULL) {
@@ -41,12 +40,12 @@ int main(int argc, char ** argv) {
   long long totalSize = 0;
   struct stat st;
   for(int i = 0 ; i < nFiles ; i ++ ) {
-    if( 0 != stat(files[i],&st)) {
+    if(0 != stat(files[i], &st)) {
       perror("stat failed:");
       exit(-1);
     }
     totalSize += st.st_size;
-    printf("\t%s : %ld\n", files[i], st.st_size);
+    printf("\t%s: %ld\n", files[i], st.st_size);
   }
   printf("Total size: %lld bytes.\n", totalSize);
 
