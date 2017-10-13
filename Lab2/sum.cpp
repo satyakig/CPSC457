@@ -29,7 +29,7 @@ void* sumArr(void* tid) {
     int id = (long) tid;
     int sum = 0;
 
-    for(int i = (splits[id] - split); i < split; i++) {
+    for(int i = (splits[id] - split); i < splits[id]; i++) {
         sum += arr[i];
         cout << " " << arr[i];
     }
@@ -66,7 +66,7 @@ int main(int argc, char **argv) {
 
     split = (int) ceil(((double)(1.0 * totalInts))/((double)(1.0 * max_threads)));
     cout << "Total # of integers: " << totalInts << endl;
-    cout << "split: " << split << endl;
+    cout << "Split: " << split << endl << endl;
 
     for(int i = 0; i < max_threads; i++) {
         if(i == max_threads - 1)
