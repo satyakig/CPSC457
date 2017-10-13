@@ -5,7 +5,7 @@
  * Course:      CPSC 457
  * Tutorial:    T01
  * Assignment:  2
- * Question:    Q6
+ * Question:    Q8
  * File Name:   sum.cpp
  *********************************************/
 
@@ -28,8 +28,11 @@ static int split = 0;
 void* sumArr(void* tid) {
     int id = (long) tid;
     int sum = 0;
+    int i = (splits[id] - split);
+    if(splits[id] == totalInts)
+        i = splits[id - 1];
 
-    for(int i = (splits[id] - split); i < splits[id]; i++) {
+    for(; i < splits[id]; i++) {
         sum += arr[i];
         cout << " " << arr[i];
     }
@@ -66,7 +69,6 @@ int main(int argc, char **argv) {
 
     split = (int) ceil(((double)(1.0 * totalInts))/((double)(1.0 * max_threads)));
     cout << "Total # of integers: " << totalInts << endl;
-    cout << "Split: " << split << endl << endl;
 
     for(int i = 0; i < max_threads; i++) {
         if(i == max_threads - 1)
@@ -87,6 +89,6 @@ int main(int argc, char **argv) {
     for (i = 0; i < max_threads; i++)
         pthread_join(threads[i], NULL);
 
-    cout << "Sum: " << total << endl;
+    cout << endl << "SUM: " << total << endl;
     return 0;
 }
