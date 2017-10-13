@@ -6,7 +6,7 @@
  * Tutorial:    T01
  * Assignment:  2
  * Question:    Q6
- * File Name: scan.c
+ * File Name:   scan.c
  *********************************************/
 
 #include <stdio.h>
@@ -49,12 +49,10 @@ int main(int argc, char **argv) {
 
   char buff[MAX_FNAME_SIZE];
   int nFiles = 0;
-  // char* files[MAX_FILES];
   struct file_info files[MAX_FILES];
 
   while(fgets(buff, MAX_FNAME_SIZE, fp)) {
     int len = strlen(buff) - 1;
-    // files[nFiles] = strndup(buff,len);
     files[nFiles].name = strndup(buff,len);
     nFiles++;
   }
