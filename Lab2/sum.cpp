@@ -15,14 +15,16 @@
 #include <fstream>
 #include <pthread.h>
 #include <fstream>
+#include <math.h>
 
 using namespace std;
 
 static int sum = 0;
 static int arr[1000000];
+static int splits[1000000];
 
-void* thread_print(void * tid) {
-    printf("thread %ld running\n", tid);
+void* thread_print(void* tid) {
+    printf("Thread %ld: \n", tid);
     pthread_exit(0);
 }  
 
@@ -35,17 +37,33 @@ int main(int argc, char **argv){
 
     char* file = argv[1];
     int max_threads = atoi(argv[2]);
+    cout << "Input file: " << file << endl;
+    cout << "# of threads to use: " << max_threads << endl;
 
     ifstream read(file);
-    int num, total = 0;
+    int num, totalInts = 0;
     while(read >> num) {
-        arr[total] = num;
-        total++;
+        if(totalInts > 999999) 
+            break;        
+        else{
+            arr[totalInts] = num;
+            totalInts++;
+        }        
     }
 
-    cout << "Total: " << total << endl;
-    for(int i = 0; i <= total; i++)
-        cout << arr[i] << endl;
+    cout << "Total # of integers: " << totalInts << endl;
+    int split = (int) ceil(((double)(1.0 * totalInts))/((double)(1.0 * max_threads)));
+    cout << "split by " << split << endl;
+
+
+    for(int i = 0; i < max_threads; i++){
+        if(i == max_threds - 1)
+            splits[i] = totalInts;
+        else
+            splits[i] = split * i;
+        cout << "split " << i << " = " << splits[i] << endl;
+    }
+    
 
     // pthread_t threads[max_threads];
     // int rc;
