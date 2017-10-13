@@ -57,10 +57,10 @@ int main(int argc, char **argv){
 
 
     for(int i = 0; i < max_threads; i++){
-        if(i == max_threds - 1)
+        if(i == max_threads - 1)
             splits[i] = totalInts;
         else
-            splits[i] = split * i;
+            splits[i] = split * (i + 1);
         cout << "split " << i << " = " << splits[i] << endl;
     }
     
