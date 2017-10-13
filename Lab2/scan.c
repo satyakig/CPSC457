@@ -1,3 +1,14 @@
+/**********************************************
+ * Last Name:   Ghosh
+ * First Name:  Satyaki
+ * Student ID:  10077685
+ * Course:      CPSC 457
+ * Tutorial:    T01
+ * Assignment:  2
+ * Question:    Q6
+ * File Name: scan.c
+ *********************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -16,7 +27,7 @@ struct file_info {
 int compare(const void *p, const void *q) {
   long long l = ((struct file_info *)p)->size;
   long long r = ((struct file_info *)q)->size;
-  return (l - r);
+  return (r - l);
 }
 
 int main(int argc, char **argv) {
@@ -38,12 +49,13 @@ int main(int argc, char **argv) {
 
   char buff[MAX_FNAME_SIZE];
   int nFiles = 0;
-  char* files[MAX_FILES];
-  struct file_info arr[MAX_FILES];
+  // char* files[MAX_FILES];
+  struct file_info files[MAX_FILES];
+
   while(fgets(buff, MAX_FNAME_SIZE, fp)) {
     int len = strlen(buff) - 1;
-    files[nFiles] = strndup(buff,len);
-    arr[nFiles].name = files[nFiles];
+    // files[nFiles] = strndup(buff,len);
+    files[nFiles].name = strndup(buff,len);
     nFiles++;
   }
   fclose(fp);
@@ -52,26 +64,30 @@ int main(int argc, char **argv) {
   long long totalSize = 0;
   struct stat st;
   for(int i = 0 ; i < nFiles ; i ++ ) {
-    if(0 != stat(files[i], &st)) {
+    if(0 != stat(files[i].size, &st)) {
       perror("stat failed:");
       exit(-1);
     }
-    arr[i].size = st.st_size;
+    // files[i].size = st.st_size;
   }
 
-  qsort((void*) arr, nFiles, sizeof(arr[0]), compare);
-  int max = nFiles - fileNum;
-  if(max < 0)
-   max = 0;
+  qsort((void*) files, nFiles, sizeof(files[0]), compare);
 
-  for(int i = nFiles - 1; i >= max; i--) {
-    printf("\t%s: %lld bytes.\n", arr[i].name, arr[i].size);
-    totalSize += arr[i].size;
+  int max = 0;
+  if(nFiles < fileNum)
+    max = nFiles;
+  else
+    max = fileNum
+
+  for(int i = 0; i < max; i++) {
+    printf("\t%s: %lld bytes.\n", files[i].name, files[i].size);
+    totalSize += files[i].size;
   }
   printf("Total Size: %lld bytes.\n", totalSize);
 
   for(int i = 0; i < nFiles ; i++ ) {
-    free(files[i]);
+    free(files[i].name);
   }
+  
   return 0;
 }
