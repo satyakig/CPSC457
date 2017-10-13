@@ -64,11 +64,11 @@ int main(int argc, char **argv) {
   long long totalSize = 0;
   struct stat st;
   for(int i = 0 ; i < nFiles ; i ++ ) {
-    if(0 != stat(files[i].size, &st)) {
+    if(0 != stat(files[i].name, &st)) {
       perror("stat failed:");
       exit(-1);
     }
-    // files[i].size = st.st_size;
+    files[i].size = st.st_size;
   }
 
   qsort((void*) files, nFiles, sizeof(files[0]), compare);
@@ -77,7 +77,7 @@ int main(int argc, char **argv) {
   if(nFiles < fileNum)
     max = nFiles;
   else
-    max = fileNum
+    max = fileNum;
 
   for(int i = 0; i < max; i++) {
     printf("\t%s: %lld bytes.\n", files[i].name, files[i].size);
@@ -88,6 +88,6 @@ int main(int argc, char **argv) {
   for(int i = 0; i < nFiles ; i++ ) {
     free(files[i].name);
   }
-  
+
   return 0;
 }
