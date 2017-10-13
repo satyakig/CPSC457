@@ -19,18 +19,24 @@
 
 using namespace std;
 
-static int sum = 0;
+static int total = 0;
 static int arr[1000000];
 static int splits[1000000];
 static int totalInts = 0;
 static int split = 0;
 
 void* sumArr(void* tid) {
-    int start;
-    start = (long) tid;
-    
-    printf("Thread %ld %d: \n", tid, start);
-    printf("start at: %d\n", splits[start]);
+    int id = (long) tid;
+    int sum = 0;
+
+    for(int i = (splits[id] - split); i < split; i++) {
+        sum += arr[i];
+        cout << " " << arr[i];
+    }
+    total += sum;
+    cout << endl;
+        
+    printf("Thread %ld: %d\n", tid, sum);
     pthread_exit(0);
 }  
 
@@ -58,8 +64,9 @@ int main(int argc, char **argv) {
         }        
     }
 
-    cout << "Total # of integers: " << totalInts << endl;
     split = (int) ceil(((double)(1.0 * totalInts))/((double)(1.0 * max_threads)));
+    cout << "Total # of integers: " << totalInts << endl;
+    cout << "split: " << split << endl;
 
     for(int i = 0; i < max_threads; i++) {
         if(i == max_threads - 1)
@@ -80,5 +87,6 @@ int main(int argc, char **argv) {
     for (i = 0; i < max_threads; i++)
         pthread_join(threads[i], NULL);
 
+    cout << "Sum: " << total << endl;
     return 0;
 }
