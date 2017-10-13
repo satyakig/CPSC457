@@ -26,9 +26,11 @@ static int totalInts = 0;
 static int split = 0;
 
 void* sumArr(void* tid) {
-    int start = (int) *tid;
-    cout << start << endl;
-    printf("Thread %ld: \n", tid);
+    int start;
+    start = (long) tid;
+    
+    printf("Thread %ld %d: \n", tid, start);
+    printf("start at: %d\n", splits[start]);
     pthread_exit(0);
 }  
 
