@@ -66,8 +66,8 @@ int main(int argc, char ** argv)
         nums[size] = num;
     }
 
-    for(int i = 0; i <= size; i++)
-        printf("%d\n", nums[i]);
+    for(int i = 0; i < size; i++)
+        printf("%" PRId64 "\n", nums[i]);
 
     // while(1) {
     //     int64_t num;
@@ -79,6 +79,7 @@ int main(int argc, char ** argv)
 
     // report results
     printf("Found %ld primes.\n", count);
+    printf("Size %d\n", size);
 
     return 0;
 }
