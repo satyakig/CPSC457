@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <math.h>
+#include <inttypes.h>
 
 // primality test, if n is prime, return 1, else return 0
 int isPrime(int64_t n)
