@@ -7,9 +7,16 @@
 #include <stdint.h>
 #include <math.h>
 #include <inttypes.h>
+#include <pthread.h>
+
+
+int64_t nums[10000];
+int size = 0; 
+int64_t primeCount = 0;
+pthread_mutex_t lock;
 
 // primality test, if n is prime, return 1, else return 0
-int isPrime(int64_t n)
+void* isPrime(void* n)
 {
     if(n <= 1) 
         return 0; // small numbers are not primes
@@ -30,6 +37,8 @@ int isPrime(int64_t n)
     }
     
     return 1;
+
+    pthread_exit(0);
 }
 
 int main(int argc, char ** argv)
@@ -53,12 +62,7 @@ int main(int argc, char ** argv)
     }
 
     // count the primes
-    printf("Counting primes using %d thread%s.\n", nThreads, nThreads == 1 ? "" : "s");
-    
-    int64_t nums[10000];
-    int size = 0; 
-
-    int64_t count = 0;
+    printf("Counting primes using %d thread%s.\n", nThreads, nThreads == 1 ? "" : "s");    
 
     for(; true; size++) {
         int64_t num;
@@ -67,20 +71,9 @@ int main(int argc, char ** argv)
         nums[size] = num;
     }
 
-    for(int i = 0; i < size; i++)
-        printf("%" PRId64 "\n", nums[i]);
-
-    // while(1) {
-    //     int64_t num;
-    //     if(1 != scanf("%ld", & num)) 
-    //         break;
-    //     if(isPrime(num)) 
-    //         count ++;
-    // }
-
     // report results
     printf("Found %ld primes.\n", count);
-    printf("Size %d\n", size);
+    printf("Size %d.\n", size);
 
     return 0;
 }
