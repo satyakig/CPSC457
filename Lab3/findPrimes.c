@@ -18,25 +18,25 @@ pthread_mutex_t lock;
 // primality test, if n is prime, return 1, else return 0
 void* isPrime(void* n)
 {
-    if(n <= 1) 
-        return 0; // small numbers are not primes
+    // if(n <= 1) 
+    //     return 0; // small numbers are not primes
 
-    if(n <= 3)
-        return 1; // 2 and 3 are prime
+    // if(n <= 3)
+    //     return 1; // 2 and 3 are prime
 
-    if(n % 2 == 0 || n % 3 == 0)
-        return 0; // multiples of 2 and 3 are not primes
+    // if(n % 2 == 0 || n % 3 == 0)
+    //     return 0; // multiples of 2 and 3 are not primes
 
-    int64_t i = 5;
-    int64_t max = sqrt(n);
+    // int64_t i = 5;
+    // int64_t max = sqrt(n);
 
-    while(i <= max) {
-        if (n % i == 0 || n % (i+2) == 0)
-            return 0;
-        i += 6;
-    }
+    // while(i <= max) {
+    //     if (n % i == 0 || n % (i+2) == 0)
+    //         return 0;
+    //     i += 6;
+    // }
     
-    return 1;
+    // return 1;
 
     pthread_exit(0);
 }
@@ -72,7 +72,7 @@ int main(int argc, char ** argv)
     }
 
     // report results
-    printf("Found %ld primes.\n", count);
+    printf("Found %ld primes.\n", primeCount);
     printf("Size %d.\n", size);
 
     return 0;
