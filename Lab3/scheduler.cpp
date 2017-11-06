@@ -19,17 +19,12 @@
   
 using namespace std;
 
-int minIndex(vector<int> vec) {
-    int index = 0;
-    for(int i = 1; i < vec.size(); i++) {
-        if(vec.at(index) > vec.at(i))
-            index = i;
-    }
+vector<int> arrival;   
+vector<int> burst;
+vector<bool> completed;
 
-    return index;
-}
 
-int findFirstSJF(vector<int> arrival, vector<int> burst) {
+int findFirstSJF() {
     int index = 0;
     int bur = burst.at(0);
     
@@ -43,34 +38,77 @@ int findFirstSJF(vector<int> arrival, vector<int> burst) {
     return index;
 }
 
-int printStart(vector<int> arrival) {
-    printf("Time");
+void print(vector<int> chart) {
+    printf("Time ");
     for(int i = 0; i < arrival.size(); i++)
         printf(" P%d ", i);
     cout << endl;
-    printf("-------------------------------------------------------------------------------------------------\n");
+    printf("------------------------------------------------------------------------------\n");
 
-    if(arrival.at(0) == 0) {        
-        return 0;
-    }
-    else {
-        int i;
-        for(i = 0; i < arrival.at(0); i++) {
-            printf("%d\n", i);
+    for(int i = 0; i < chart.size(); i++) {
+        printf("%d    ", i);
+        if(chart.at(i) == -1){           
+            for(int i = 0; i < arrival.size(); i++)
+                printf("   ", i);
+            cout << endl;
         }
-        return i;
+        else {
+            for(int i = 0; i < arrival.size(); i++) {
+                if(chart.at(i) == i)
+                    printf(" + ", i);
+                else
+                    printf(" . ", i);
+            }                
+            cout << endl;
+        }
     }
 }
 
-void SJF(vector<int> arrival, vector<int> burst) {
-    queue<int> que;
-    que.push(findFirstSJF(arrival, burst));
+bool ifEmpty() {
+    bool empty = true;
 
-    int arrIndex = 0;
-
-    for(int i = printStart(arrival); que.size() != 0; i++) {
-        printf("%d    .  .  .\n", i);
+    for(int i = 0; i < completed.size(); i++) {
+        if(completed.at(i) == false) {
+            empty = false;
+            break;
+        }
     }
+
+    return empty;
+}
+
+vector<int> SJF() {
+    vector<int> chart;
+
+    for(int i = 0; i < findFirstSJF(arrival); i++)
+        chart.push_back(-1);
+
+    int pID = findFirstSJF(arrival);
+    int time = arrival.at(pID);
+
+    while(true) {
+        while(burst.at(pID) != 0) {
+            chart.push_back(pID);
+            burst.at(pID) = burst.at(pID) - 1;
+            time++;
+        }
+        completed.at(pID) = true;
+        
+        int ind = -1;
+        if(!ifEmpty()) {
+            for(int i = 0; i < arrival.size(); i++) {
+                if(completed.at(i) == false && arrival.at(i) <= time) {
+                    if(ind == -1)
+                        ind = i;
+                    else if(burst.at(ind) > burst.at(i))
+                        ind = i;
+                }
+            }
+            pID = ind;
+        }
+    }
+
+    return chart;
 }
 
 int main(int argc, char **argv)
@@ -82,10 +120,7 @@ int main(int argc, char **argv)
 
     char* config = argv[1];
     string command = argv[2];
-    int quantum = 0; 
-    
-    vector<int> arrival;   
-    vector<int> burst;  
+    int quantum = 0;       
 
     if(command.compare("SJF") == 0 || command.compare("RR") == 0) {
         if(command.compare("RR") == 0) {
@@ -119,10 +154,15 @@ int main(int argc, char **argv)
     while(file >> a && file >> b) {
         arrival.push_back(a);
         burst.push_back(b);
+        completed.push_back(false);
     }
 
+    vector<int> chart;
     if(command.compare("SJF") == 0)
-        SJF(arrival, burst);
+        chart = SJF();
+
+    print(chart);
+    
     
     return 0;
 }
