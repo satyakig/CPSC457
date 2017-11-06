@@ -6,9 +6,9 @@
  * Tutorial:    T01
  * Assignment:  3
  * Question:    Q5
- * File Name:   countPrimes.c 
+ * File Name:   count.cpp 
  * compile with:
- *  $ g++ countPrimes.c -O2 -o count -lm -pthread
+ *  $ g++ count.cpp -O2 -o count -lm -pthread
  *********************************************/
 
 #include <stdio.h>
