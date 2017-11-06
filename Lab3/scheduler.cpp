@@ -78,7 +78,6 @@ bool isEmpty() {
 }
 
 void SJF() {
-    cout << "starting SJF" << endl;
     vector<int> chart;
 
     for(int i = 0; i < findFirstSJF(); i++)
@@ -111,9 +110,10 @@ void SJF() {
             break;
     }
 
-    cout << "Done making chart" << endl;
+    for(int i = 0; i < chart.size(); i++)
+        printf(" %d \n", chart.at(i));
 
-    print(chart);
+    //print(chart);
     return;
 }
 
