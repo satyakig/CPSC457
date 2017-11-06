@@ -64,7 +64,7 @@ void print(vector<int> chart) {
     }
 }
 
-bool ifEmpty() {
+bool isEmpty() {
     bool empty = true;
 
     for(int i = 0; i < completed.size(); i++) {
@@ -77,7 +77,8 @@ bool ifEmpty() {
     return empty;
 }
 
-vector<int> SJF() {
+void SJF() {
+    cout << "starting SJF" << endl;
     vector<int> chart;
 
     for(int i = 0; i < findFirstSJF(); i++)
@@ -95,7 +96,7 @@ vector<int> SJF() {
         completed.at(pID) = true;
         
         int ind = -1;
-        if(!ifEmpty()) {
+        if(!isEmpty()) {
             for(int i = 0; i < arrival.size(); i++) {
                 if(completed.at(i) == false && arrival.at(i) <= time) {
                     if(ind == -1)
@@ -106,9 +107,14 @@ vector<int> SJF() {
             }
             pID = ind;
         }
+        else
+            break;
     }
 
-    return chart;
+    cout << "Done making chart" << endl;
+
+    print(chart);
+    return;
 }
 
 int main(int argc, char **argv)
@@ -157,11 +163,8 @@ int main(int argc, char **argv)
         completed.push_back(false);
     }
 
-    vector<int> chart;
     if(command.compare("SJF") == 0)
-        chart = SJF();
-
-    print(chart);
+        SJF();
     
     
     return 0;
