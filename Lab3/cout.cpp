@@ -8,7 +8,7 @@
  * Question:    Q5
  * File Name:   countPrimes.c 
  * compile with:
- *  $ g++ findPrimes.c -O2 -o count -lm -pthread
+ *  $ g++ countPrimes.c -O2 -o count -lm -pthread
  *********************************************/
 
 #include <stdio.h>
