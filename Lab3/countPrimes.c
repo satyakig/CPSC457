@@ -6,9 +6,9 @@
  * Tutorial:    T01
  * Assignment:  3
  * Question:    Q5
- * File Name:   findPrimes.c 
+ * File Name:   countPrimes.c 
  * compile with:
- *  $ g++ findPrimes.c -O2 -o count -lm -pthread 
+ *  $ g++ findPrimes.c -O2 -o count -lm -pthread
  *********************************************/
 
 #include <stdio.h>
@@ -64,8 +64,6 @@ void* isPrime(void* tid)
             primeCount++;
             pthread_mutex_unlock(&lock);
         }
-        
-        // printf("Thread %d: %" PRId64 " is %s.\n", id, num, prime? "prime" : "not prime");
     }
 
     pthread_exit(0);
@@ -89,7 +87,7 @@ int main(int argc, char ** argv)
     
     nThreads = atoi(argv[1]);
 
-    printf("\nCounting primes using %d thread%s.\n", nThreads, nThreads == 1 ? "" : "s");    
+    printf("Counting primes using %d thread%s.\n", nThreads, nThreads == 1 ? "" : "s");    
 
     for(; true; arrSize++) {
         int64_t num;
@@ -133,7 +131,7 @@ int main(int argc, char ** argv)
         pthread_join(threads[i], NULL);   
 
     // report results
-    printf("\nFound %d primes.\n", primeCount);
+    printf("Found %d primes.\n", primeCount);
     pthread_mutex_destroy(&lock);      
 
     return 0;
