@@ -45,7 +45,7 @@ void print(vector<int> chart) {
     cout << endl;
     printf("------------------------------------------------------------------------------\n");
 
-    for(int chartI = 0; i < chart.size(); chartI++) {
+    for(int chartI = 0; chartI < chart.size(); chartI++) {
         printf("%d    ", chartI);
         if(chart.at(chartI) == -1){           
             for(int j = 0; i < arrival.size(); j++)
