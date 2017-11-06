@@ -133,7 +133,7 @@ int main(int argc, char ** argv)
         pthread_join(threads[i], NULL);   
 
     // report results
-    printf("Found %ld primes.\n", primeCount);
+    printf("\nFound %d primes.\n", primeCount);
     pthread_mutex_destroy(&lock);      
 
     return 0;
