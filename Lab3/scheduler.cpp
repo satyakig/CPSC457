@@ -14,8 +14,8 @@
  #include <iostream>
  #include <string>
  #include <fstream>
- 
- 
+ #include <vector> 
+  
  using namespace std;
 
  int main(int argc, char **argv)
@@ -25,9 +25,12 @@
         exit(-1);
     }
 
-    string config = argv[1];
+    char* config = argv[1];
     string command = argv[2];
-    int quantum = 0;   
+    int quantum = 0; 
+    
+    vector <int> arrival;   
+    vector <int> burst;  
 
     if(command.compare("SFJ") == 0 || command.compare("RR") == 0) {
         if(command.compare("RR") == 0) {
@@ -46,7 +49,7 @@
         else if(argc == 4)
             printf("Time-quantum specified for SFJ algorithm but it is ignored.\n");
     }
-    else{
+    else {
         printf("Invalid scheduling algorithm, only SFJ and RR accepted.\n");
         exit(-1);
     }
@@ -54,6 +57,24 @@
     cout << config << endl;
     cout << command << endl;
     cout << quantum << endl;
+    
+    ifstream file(config);
+    if(!file){
+        printf("Could not open file.\n");
+        exit(-1);
+    }
+
+    int a, b;
+    while(read >> num && read >> b) {
+        arrival.push_back(a);
+        burst.push_back(b);
+    }
+
+    for(int i = 0; i < arrival.size(); i++) {
+        cout << arrival.at(i) << " " << burst.at(i) << endl;
+    }
+
+    cout << "Size: " << arrival.size() << " " << burst.size() << endl;
 
     return 0;
 
