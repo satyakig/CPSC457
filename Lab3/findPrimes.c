@@ -42,7 +42,6 @@ void* isPrime(void* tid)
     // }
     
     // return 1;
-    printf("Thread id = %d\n", (long) tid);
 
     pthread_exit(0);
 }
@@ -80,6 +79,9 @@ int main(int argc, char ** argv)
         exit(-1);
     }
 
+    if(nThreads > arrSize)
+        nThreads = arrSize;
+
     split = (int) ceil(((double)(1.0 * arrSize))/((double)(1.0 * nThreads)));
     for(int i = 0; i < nThreads; i++) {
         if(i == nThreads - 1)
@@ -112,6 +114,7 @@ int main(int argc, char ** argv)
     // report results
     printf("Found %ld primes.\n", primeCount);
     printf("threads %d\n", nThreads);
+    printf("split %d\n", split);
     printf("size %d\n", arrSize);
     
     
