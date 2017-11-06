@@ -36,7 +36,6 @@ int findFirstSJF() {
             index = i;
         }
     }
-    cout << "Index: " << index << endl;
     return index;
 }
 
@@ -102,7 +101,7 @@ void SJF() {
             time++;
         }
         completed.at(pID) = true;
-        times.at(pID) = time - burst_orig.at(pID); 
+        times.at(pID) = time - burst_orig.at(pID) - arrival.at(PID); 
         
         int ind = -1;
         if(!isEmpty()) {
@@ -174,7 +173,8 @@ int main(int argc, char **argv)
 
     if(command.compare("SJF") == 0)
         SJF();
-    
+    else
+        printf("Did not have time to do RR algorithm.\n");    
     
     return 0;
 }
