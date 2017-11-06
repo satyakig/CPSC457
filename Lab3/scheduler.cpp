@@ -20,7 +20,7 @@
 
  int main(int argc, char **argv)
  {
-    if(argc < 3){
+    if(argc < 3) {
         printf("Configuration file name and scheduling algorithm required to run!\n");
         exit(-1);
     }
@@ -30,22 +30,31 @@
     int quantum = 0;   
 
     if(command.compare("SFJ") == 0 || command.compare("RR") == 0) {
-        if(command.compare("RR") == 0){
-            if(argc != 4){
-                printf("You need to specify the time quantum for RR scheduling.\n");
+        if(command.compare("RR") == 0) {
+            if(argc != 4) {
+                printf("You need to specify the time-quantum for RR scheduling.\n");
                 exit(-1);
             }
-            else
+            else {
                 quantum = atoi(argv[3]);
+                if(quantum == 0) {
+                    printf("Invalid time-quantum.\n");
+                    exit(-1);
+                }
+            }                
         }
+        else if(argc == 4)
+            printf("Time-quantum specified for SFJ algorithm but it is ignored.\n");
     }
     else{
-        printf("Invalid scheduling command.\n");
+        printf("Invalid scheduling algorithm, only SFJ and RR accepted.\n");
         exit(-1);
     }
 
     cout << config << endl;
     cout << command << endl;
     cout << quantum << endl;
+
+    return 0;
 
  }
