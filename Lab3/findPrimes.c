@@ -10,13 +10,18 @@
 #include <pthread.h>
 
 
-int64_t nums[10000];
-int size = 0; 
-int64_t primeCount = 0;
+static int64_t nums[10000];
+static int arrSize = 0;
+
+static int split = 0;
+static int splits[10000];
+
+static int64_t primeCount = 0;
+
 pthread_mutex_t lock;
 
 // primality test, if n is prime, return 1, else return 0
-void* isPrime(void* n)
+void* isPrime(void* tid)
 {
     // if(n <= 1) 
     //     return 0; // small numbers are not primes
@@ -37,6 +42,7 @@ void* isPrime(void* n)
     // }
     
     // return 1;
+    printf("Thread id = %d\n", (long) tid);
 
     pthread_exit(0);
 }
@@ -45,35 +51,68 @@ int main(int argc, char ** argv)
 {
     // parse command line arguments
     int nThreads = 1;
-    if(argc != 1 && argc != 2) {
-        printf("Usage: countPrimes [nThreads]\n");
+
+    if(argc != 2) {
+        printf("Specify the number of threads to use to run this program.\n");
         exit(-1);
     }
-    if(argc == 2)
-        nThreads = atoi(argv[1]);
 
     // handle invalid arguments
     if(nThreads < 1 || nThreads > 256) {
         printf("Bad arguments. 1 <= nThreads <= 256!\n");
-    }
-    if(nThreads != 1) {
-        printf("I am not multithreaded yet :-(\n");
         exit(-1);
     }
+    
+    nThreads = atoi(argv[1]);
 
     // count the primes
     printf("Counting primes using %d thread%s.\n", nThreads, nThreads == 1 ? "" : "s");    
 
-    for(; true; size++) {
+    for(; true; arrSize++) {
         int64_t num;
         if(1 != scanf("%ld", &num)) 
             break;
-        nums[size] = num;
+        nums[arrSize] = num;
     }
+
+    if(arrSize == 0) {
+        printf("No inputs were read.\n");
+        exit(-1);
+    }
+
+    split = (int) ceil(((double)(1.0 * arrSize))/((double)(1.0 * nThreads)));
+    for(int i = 0; i < nThreads; i++) {
+        if(i == nThreads - 1)
+            splits[i] = arrSize;
+        else
+            splits[i] = split * (i + 1);
+    }
+
+    if(pthread_mutex_init(&lock, NULL) != 0) {
+        printf("mutex init failed.\n");
+        exit(-1);
+    }
+
+    pthread_t threads[nThreads];
+
+    for(int i = 0; i < nThreads; i++ ) {
+        int rc = pthread_create(&threads[i], NULL, isPrime, (void *)i);       
+        if(rc) {
+            printf("Oops, pthread_create returned error code %d\n", rc);
+            exit(-1);
+        }
+    }
+
+    for(i = 0; i < nThreads; i++)
+        pthread_join(threads[i], NULL);    
+
 
     // report results
     printf("Found %ld primes.\n", primeCount);
-    printf("Size %d.\n", size);
+    printf("threads %d\n", max_threads);
+    printf("size %d\n", arrSize);
+    
+    
 
     return 0;
 }
