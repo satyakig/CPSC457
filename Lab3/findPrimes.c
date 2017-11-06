@@ -36,6 +36,8 @@ void* isPrime(void* tid)
     if(splits[id] == arrSize)
         i = splits[id - 1];
 
+    printf("Thread %d: start[%d] = %d  end[%d] = %d\n", id, i, nums[i], splits[id], num[splits[id]-1]);
+
     for( ; i < splits[id]; i++) {
         int num = nums[i];
         bool prime = true;
@@ -63,7 +65,9 @@ void* isPrime(void* tid)
             pthread_mutex_lock(&lock);
             primeCount++;
             pthread_mutex_unlock(&lock);
-        }        
+        }
+        
+        printf("Thread %d: %d is %s\n", id, num, prime? "prime" : "not prime");
     }
 
     pthread_exit(0);
@@ -135,10 +139,7 @@ int main(int argc, char ** argv)
     pthread_mutex_destroy(&lock);    
 
     printf("size %d\n", arrSize);
-    printf("split %d\n", split);
-    for(int i = 0; i < nThread; i++)
-        printf("splits[%d] = %d\n", i, splits[i]);
-    
+    printf("split %d\n", split);    
 
     return 0;
 }
