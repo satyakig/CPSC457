@@ -21,7 +21,9 @@ using namespace std;
 
 vector<int> arrival;   
 vector<int> burst;
+vector<int> burst_orig;
 vector<bool> completed;
+vector<double> times;
 
 
 int findFirstSJF() {
@@ -55,13 +57,20 @@ void print(vector<int> chart) {
         else {
             for(int j = 0; j < arrival.size(); j++) {
                 if(chart.at(chartI) == j)
-                    printf("  + ");
-                else
                     printf("  . ");
+                else
+                    printf("  + ");
             }                
             cout << endl;
         }
     }
+    printf("------------------------------------------------------------------------------\n");
+    double total = 0;
+    for(int i = 0; i < arrival.size(); i++) {
+        printf("P%d waited %f sec.\n", i, times.at(i));
+        total += times.at(i);
+    }
+    printf("Average waiting time = %f\n", total/arrival.size());
 }
 
 bool isEmpty() {
@@ -93,6 +102,7 @@ void SJF() {
             time++;
         }
         completed.at(pID) = true;
+        times.at(pID) = time - burst_orig.at(pID); 
         
         int ind = -1;
         if(!isEmpty()) {
@@ -157,7 +167,9 @@ int main(int argc, char **argv)
     while(file >> a && file >> b) {
         arrival.push_back(a);
         burst.push_back(b);
+        burst_orig.push_back(b);
         completed.push_back(false);
+        times.push_back(0);
     }
 
     if(command.compare("SJF") == 0)
