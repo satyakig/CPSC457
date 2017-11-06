@@ -103,13 +103,13 @@ int main(int argc, char ** argv)
         }
     }
 
-    for(i = 0; i < nThreads; i++)
+    for(int i = 0; i < nThreads; i++)
         pthread_join(threads[i], NULL);    
 
 
     // report results
     printf("Found %ld primes.\n", primeCount);
-    printf("threads %d\n", max_threads);
+    printf("threads %d\n", nThreads);
     printf("size %d\n", arrSize);
     
     
