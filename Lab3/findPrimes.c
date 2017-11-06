@@ -65,7 +65,7 @@ void* isPrime(void* tid)
             pthread_mutex_unlock(&lock);
         }
         
-        printf("Thread %d: %" PRId64 " is %s.\n", id, num, prime? "prime" : "not prime");
+        // printf("Thread %d: %" PRId64 " is %s.\n", id, num, prime? "prime" : "not prime");
     }
 
     pthread_exit(0);
@@ -89,7 +89,7 @@ int main(int argc, char ** argv)
     
     nThreads = atoi(argv[1]);
 
-    printf("Counting primes using %d thread%s.\n", nThreads, nThreads == 1 ? "" : "s");    
+    printf("\nCounting primes using %d thread%s.\n", nThreads, nThreads == 1 ? "" : "s");    
 
     for(; true; arrSize++) {
         int64_t num;
