@@ -1,6 +1,15 @@
-// counts number of primes from standard input
-// compile with:
-// $ gcc findPrimes.c -O3 -o count -lm
+/**********************************************
+ * Last Name:   Ghosh
+ * First Name:  Satyaki
+ * Student ID:  10077685
+ * Course:      CPSC 457
+ * Tutorial:    T01
+ * Assignment:  3
+ * Question:    Q5
+ * File Name:   findPrimes.c 
+ * compile with:
+ *  $ g++ findPrimes.c -O2 -o count -lm -pthread 
+ *********************************************/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -63,7 +72,7 @@ int main(int argc, char ** argv)
     int nThreads = 1;
 
     if(argc != 2) {
-        printf("Specify the number of threads to use to run this program.\n");
+        printf("Please specify the number of threads to run this program.\n");
         exit(-1);
     }
 
@@ -75,7 +84,6 @@ int main(int argc, char ** argv)
     
     nThreads = atoi(argv[1]);
 
-    // count the primes
     printf("Counting primes using %d thread%s.\n", nThreads, nThreads == 1 ? "" : "s");    
 
     for(; true; arrSize++) {
@@ -121,13 +129,8 @@ int main(int argc, char ** argv)
 
     // report results
     printf("Found %ld primes.\n", primeCount);
-    printf("threads %d\n", nThreads);
-    printf("split %d\n", split);
-    printf("size %d\n", arrSize);
-    
 
-    pthread_mutex_destroy(&lock);
-    
+    pthread_mutex_destroy(&lock);    
 
     return 0;
 }
