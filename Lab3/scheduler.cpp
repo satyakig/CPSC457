@@ -45,19 +45,19 @@ void print(vector<int> chart) {
     cout << endl;
     printf("------------------------------------------------------------------------------\n");
 
-    for(int i = 0; i < chart.size(); i++) {
-        printf("%d    ", i);
-        if(chart.at(i) == -1){           
-            for(int j = 0; i < arrival.size(); i++)
-                printf("   ", j);
+    for(int chartI = 0; i < chart.size(); chartI++) {
+        printf("%d    ", chartI);
+        if(chart.at(chartI) == -1){           
+            for(int j = 0; i < arrival.size(); j++)
+                printf("   ");
             cout << endl;
         }
         else {
-            for(int j = 0; i < arrival.size(); i++) {
-                if(chart.at(i) == j)
-                    printf(" + ");
+            for(int j = 0; i < arrival.size(); j++) {
+                if(chart.at(chartI) == j)
+                    printf("  + ");
                 else
-                    printf(" . ");
+                    printf("  . ");
             }                
             cout << endl;
         }
@@ -80,7 +80,7 @@ bool isEmpty() {
 void SJF() {
     vector<int> chart;
 
-    for(int i = 0; i < findFirstSJF(); i++)
+    for(int i = 0; i < arrival.at(findFirstSJF()); i++)
         chart.push_back(-1);
 
     int pID = findFirstSJF();
@@ -109,9 +109,6 @@ void SJF() {
         else
             break;
     }
-
-    for(int i = 0; i < chart.size(); i++)
-        printf(" %d \n", chart.at(i));
 
     print(chart);
     return;
