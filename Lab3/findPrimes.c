@@ -32,8 +32,11 @@ pthread_mutex_t lock;
 void* isPrime(void* tid)
 {
     int id = (long) tid;
+    int i = (splits[id] - split);
+    if(splits[id] == arrSize)
+        i = splits[id - 1];
 
-    for(int i = splits[id] - split; i < splits[id]; i++) {
+    for( ; i < splits[id]; i++) {
         int num = nums[i];
         bool prime = true;
 
@@ -129,8 +132,13 @@ int main(int argc, char ** argv)
 
     // report results
     printf("Found %ld primes.\n", primeCount);
-
     pthread_mutex_destroy(&lock);    
+
+    printf("size %d\n", arrSize);
+    printf("split %d\n", split);
+    for(int i = 0; i < nThread; i++)
+        printf("splits[%d] = %d\n", i, splits[i]);
+    
 
     return 0;
 }
