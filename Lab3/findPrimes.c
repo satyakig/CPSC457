@@ -87,6 +87,8 @@ int main(int argc, char ** argv)
         else
             splits[i] = split * (i + 1);
     }
+    for(int i = 0; i < nThreads; i++)
+        printf("splits[%d] = %d\n", i, splits[i]);
 
     if(pthread_mutex_init(&lock, NULL) != 0) {
         printf("mutex init failed.\n");
@@ -96,7 +98,7 @@ int main(int argc, char ** argv)
     pthread_t threads[nThreads];
 
     for(int i = 0; i < nThreads; i++ ) {
-        int rc = pthread_create(&threads[i], NULL, isPrime, (void *)i);       
+        int rc = pthread_create(&threads[i], NULL, isPrime, (void *) (intptr_t) i);       
         if(rc) {
             printf("Oops, pthread_create returned error code %d\n", rc);
             exit(-1);
