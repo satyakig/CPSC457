@@ -47,7 +47,7 @@ void* isPrime(void* tid)
             }
         }
         
-        if(bool) {
+        if(prime) {
             pthread_mutex_lock(&lock);
             primeCount++;
             pthread_mutex_unlock(&lock);
