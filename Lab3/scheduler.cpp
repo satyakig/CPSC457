@@ -101,7 +101,7 @@ void SJF() {
             time++;
         }
         completed.at(pID) = true;
-        times.at(pID) = time - burst_orig.at(pID) - arrival.at(PID); 
+        times.at(pID) = time - burst_orig.at(pID) - arrival.at(pID); 
         
         int ind = -1;
         if(!isEmpty()) {
