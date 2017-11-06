@@ -48,12 +48,12 @@ void print(vector<int> chart) {
     for(int chartI = 0; chartI < chart.size(); chartI++) {
         printf("%d    ", chartI);
         if(chart.at(chartI) == -1){           
-            for(int j = 0; i < arrival.size(); j++)
+            for(int j = 0; j < arrival.size(); j++)
                 printf("   ");
             cout << endl;
         }
         else {
-            for(int j = 0; i < arrival.size(); j++) {
+            for(int j = 0; j < arrival.size(); j++) {
                 if(chart.at(chartI) == j)
                     printf("  + ");
                 else
