@@ -80,10 +80,10 @@ bool ifEmpty() {
 vector<int> SJF() {
     vector<int> chart;
 
-    for(int i = 0; i < findFirstSJF(arrival); i++)
+    for(int i = 0; i < findFirstSJF(); i++)
         chart.push_back(-1);
 
-    int pID = findFirstSJF(arrival);
+    int pID = findFirstSJF();
     int time = arrival.at(pID);
 
     while(true) {
