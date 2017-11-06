@@ -21,7 +21,7 @@
  int main(int argc, char **argv)
  {
     if(argc < 3){
-        printf("Program requires configuration file name and scheduling algorithm to run!");
+        printf("Configuration file name and scheduling algorithm required to run!\n");
         exit(-1);
     }
 
@@ -32,7 +32,7 @@
     if(command.compare("SFJ") == 0 || command.compare("RR") == 0) {
         if(command.compare("RR") == 0){
             if(argc != 4){
-                printf("You need to speficy the time quantum for RR scheduling.");
+                printf("You need to specify the time quantum for RR scheduling.\n");
                 exit(-1);
             }
             else
@@ -40,7 +40,7 @@
         }
     }
     else{
-        printf("Invalid scheduling command.");
+        printf("Invalid scheduling command.\n");
         exit(-1);
     }
 
