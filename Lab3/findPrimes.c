@@ -13,35 +13,46 @@
 static int64_t nums[10000];
 static int arrSize = 0;
 
-static int split = 0;
 static int splits[10000];
+static int split = 0;
 
 static int64_t primeCount = 0;
-
 pthread_mutex_t lock;
 
 // primality test, if n is prime, return 1, else return 0
 void* isPrime(void* tid)
 {
-    // if(n <= 1) 
-    //     return 0; // small numbers are not primes
+    int id = (long) tid;
 
-    // if(n <= 3)
-    //     return 1; // 2 and 3 are prime
+    for(int i = splits[id] - split; i < splits[id]; i++) {
+        int num = nums[i];
+        bool prime = true;
 
-    // if(n % 2 == 0 || n % 3 == 0)
-    //     return 0; // multiples of 2 and 3 are not primes
-
-    // int64_t i = 5;
-    // int64_t max = sqrt(n);
-
-    // while(i <= max) {
-    //     if (n % i == 0 || n % (i+2) == 0)
-    //         return 0;
-    //     i += 6;
-    // }
+        if(num <= 1) 
+            prime = false; // small numbers are not primes
+        else if(num <= 3)
+            prime = true; // 2 and 3 are prime
+        else if(num % 2 == 0 || num % 3 == 0)
+            prime = false; // multiples of 2 and 3 are not primes
+        else {
+            int64_t i = 5;
+            int64_t max = sqrt(num);
     
-    // return 1;
+            while(i <= max) {
+                if (num % i == 0 || num % (i + 2) == 0) {
+                    prime = false;
+                    break;
+                }
+                i += 6;
+            }
+        }
+        
+        if(bool) {
+            pthread_mutex_lock(&lock);
+            primeCount++;
+            pthread_mutex_unlock(&lock);
+        }        
+    }
 
     pthread_exit(0);
 }
@@ -89,8 +100,6 @@ int main(int argc, char ** argv)
         else
             splits[i] = split * (i + 1);
     }
-    for(int i = 0; i < nThreads; i++)
-        printf("splits[%d] = %d\n", i, splits[i]);
 
     if(pthread_mutex_init(&lock, NULL) != 0) {
         printf("mutex init failed.\n");
@@ -108,8 +117,7 @@ int main(int argc, char ** argv)
     }
 
     for(int i = 0; i < nThreads; i++)
-        pthread_join(threads[i], NULL);    
-
+        pthread_join(threads[i], NULL);   
 
     // report results
     printf("Found %ld primes.\n", primeCount);
@@ -117,6 +125,8 @@ int main(int argc, char ** argv)
     printf("split %d\n", split);
     printf("size %d\n", arrSize);
     
+
+    pthread_mutex_destroy(&lock);
     
 
     return 0;
