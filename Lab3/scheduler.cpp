@@ -34,7 +34,7 @@ int findFirstSJF() {
             index = i;
         }
     }
-
+    cout << "Index: " << index << endl;
     return index;
 }
 
@@ -113,7 +113,7 @@ void SJF() {
     for(int i = 0; i < chart.size(); i++)
         printf(" %d \n", chart.at(i));
 
-    //print(chart);
+    print(chart);
     return;
 }
 
