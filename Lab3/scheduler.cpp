@@ -65,7 +65,7 @@
     }
 
     int a, b;
-    while(read >> num && read >> b) {
+    while(file >> a && file >> b) {
         arrival.push_back(a);
         burst.push_back(b);
     }
