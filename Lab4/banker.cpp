@@ -3,6 +3,7 @@
  *
  * Student Name: Satyaki Ghosh
  * Student Number: 10077685
+ * 
  * Class: CPSC 457 Fall 2017
  * Instructor: Pavol Federl
  * Copyright 2017 University of Calgary. All rights reserved.
@@ -13,19 +14,23 @@
 #include <sstream>
 #include <stdlib.h>
 #include <algorithm>
+#include <string>
 
 using namespace std;
 
 class Banker
 {
 private:
-    int numProc;      // the number of processes
-    int numResources; // the number of resources
+    int numProc;      // the number of processes, N
+    int numResources; // the number of resources types, M
+    
     int* available;  // number of available instances of each resource
     int** max;       // the max demand of each process, e.g., max[i][j] = k
                       // means process i needs at most k instances of resource j
     int** allocation;// the number of resource instances already allocated
     int** need;      // the number of resource isntances needed by each process
+    
+    int* safe;
 
 public:
 
@@ -50,6 +55,7 @@ public:
         need = new int*[numProc];
         for (int i = 0; i < numProc; i++)
             need[i] = new int[numResources];
+        safe = new int [numProc];
     }
 
     /* Destroy the vectors and matrixes
@@ -77,16 +83,142 @@ public:
      * @param sequenceOrReason  The safe execution sequence returned by the algorithm
      * @return Whether granting the request will lead to a safe state.
      */
-    bool isSafe (int pid, int* req, string & sequenceOrReason) {
-		cout << numProc << endl;
-		cout << numResources << endl;
-        sequenceOrReason = "Not implemented yet.";
-        return false;
+    bool isSafe (int pid, int* req, string& sequenceOrReason) {
+        for(int i = 0 ; i < numProc ; i++) {
+            for (int j = 0 ; j < numResources ; j++)
+                need[i][j] = max[i][j] - allocation[i][j];
+        }
+
+        bool error = false;
+        for(int i = 0; i < numResources; i++) {
+            if(req[i] > need[pid][i]) {
+                error = true;
+                sequenceOrReason = "Request would result in unsafe state.";
+                return false;
+            }
+        }
+
+        if(!error) {
+            bool atleastOnce = false;
+            bool isItSafe = false;
+
+            for(int i = 0; i < numResources; i++) {
+                if(req[i] > available[i]) {
+                    atleastOnce = true;
+                    int* tempAvailable;
+                    int* tempRequest;
+                    int** tempNeed;
+                    
+                    saveTemp(tempAvailable, tempRequest, tempNeed, req);
+                    
+                    for(int j = 0; j < numResources; j++) {
+                        available[j] = available[j] - req[j];
+                        allocation[pid][j] = allocation[pid][j] + req[j];
+                        need[pid][j] = need[pid][j] - req[j];
+                    }
+
+                    isItSafe = bankers();
+                    if(isItSafe) {
+                        delete[] tempAvailable;
+                        delete[] tempRequest;
+                        for(int x = 0; x < numProc; x++)
+                            delete[] tempNeed[x];
+                        delete[] tempNeed;                      
+                    }
+                    else {
+                        available = tempAvailable;
+                        req = tempRequest;
+                        need = tempNeed;
+
+                        sequenceOrReason = "Request would result in unsafe state.";
+                        return false;
+                    }
+                }
+            }
+
+            if(!atleastOnce)
+                isItSafe = bankers();
+
+            if(isItSafe) {
+                sequenceOrReason = printSequence();
+                return true;
+            }
+            else {
+                sequenceOrReason = "Request would result in unsafe state.";
+                return false;
+            }                
+        }
+    }
+
+    saveTemp(int* avl, int* req, int** ned, int* reqMain) {
+        avl = new int[numResources];
+        req = new int[numResources];
+
+        ned = new int*[numProc];
+        for (int i = 0; i < numProc; i++)
+            ned[i] = new int[numResources];
+
+        for(int i = 0; i < numResources; i++) {
+            avl[i] = available[i];
+            req[i] = reqMain[i];
+        }
+
+        for(int i = 0; i < numProc; i++) {
+            for(int j = 0; j < numResources; j++)
+                ned[i][j] = need[i][j];
+        }
+    }
+
+    bool bankers() {
+        bool finish[numProc];
+        fill(finish, finish + numProc, 0);
+
+        int work[numResources];
+
+		for(int i = 0; i < numResources; i++)
+            work[i] = available[i];
+            
+        for(int i = 0; i < numProc; ) {
+            bool found = false;
+            for(int j = 0; j < numProc; j++) {
+                if (finish[j] == 0) {
+
+                    int k;
+                    for(k = 0; k < numResources; k++) {
+                        if(need[j][k] > work[k])
+                            break;
+                    }                        
+    
+                    if(k == numResources) {
+                        for(int l = 0 ; l < numResources; l++)
+                            work[l] += allocation[j][l];                        
+                        
+                        safe[i] = j;
+                        i++;
+    
+                        finish[j] = true;    
+                        found = true;
+                    }
+                }
+            }
+ 
+            if(found == false) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+
+    string printSequence() {
+        string temp = "";
+        for(int i = 0; i < numProc; i++)
+            temp += ("P" + to_string(safe[i]) + " ");
+        return temp;
     }
 };
 
-int main (int argc, char * const argv[])
-{
+int main (int argc, char * const argv[]) {
     ifstream config;       // Configuration file
     string conffile;       // The configuration file name
     int numProc;           // The number of processes
