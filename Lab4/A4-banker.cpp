@@ -1,12 +1,10 @@
 /*
  * banker.cpp
  *
- * Student Name:
- * Student Number:
- *
- * Class: CPSC 457 Spring 2017
+ * Student Name: Satyaki Ghosh
+ * Student Number: 10077685
+ * Class: CPSC 457 Fall 2017
  * Instructor: Pavol Federl
- *
  * Copyright 2017 University of Calgary. All rights reserved.
  */
 
