@@ -21,11 +21,11 @@ class Banker
 private:
     int numProc;      // the number of processes
     int numResources; // the number of resources
-    int * available;  // number of available instances of each resource
-    int ** max;       // the max demand of each process, e.g., max[i][j] = k
+    int* available;  // number of available instances of each resource
+    int** max;       // the max demand of each process, e.g., max[i][j] = k
                       // means process i needs at most k instances of resource j
-    int ** allocation;// the number of resource instances already allocated
-    int ** need;      // the number of resource isntances needed by each process
+    int** allocation;// the number of resource instances already allocated
+    int** need;      // the number of resource isntances needed by each process
 
 public:
 
@@ -77,7 +77,9 @@ public:
      * @param sequenceOrReason  The safe execution sequence returned by the algorithm
      * @return Whether granting the request will lead to a safe state.
      */
-    bool isSafe (int pid, int * req, string & sequenceOrReason) {
+    bool isSafe (int pid, int* req, string & sequenceOrReason) {
+		cout << numProc << endl;
+		cout << numResources << endl;
         sequenceOrReason = "Not implemented yet.";
         return false;
     }
