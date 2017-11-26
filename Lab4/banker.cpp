@@ -150,7 +150,7 @@ public:
         }
     }
 
-    saveTemp(int* avl, int* req, int** ned, int* reqMain) {
+    void saveTemp(int* avl, int* req, int** ned, int* reqMain) {
         avl = new int[numResources];
         req = new int[numResources];
 
