@@ -28,26 +28,36 @@ struct CLOCK {
     int page;
 };
 
-vector <int> reference;
-int total;
-int faults;
-int* frame;
-vector <CLOCK> clockFrame;
-int clockPointer;
+vector <int> reference; // holds the reference string
+int total;  // # of available frames
+int faults; // # of faults for a specific algorithm
+int* frame; // the frame used for LRU and OPT computation
+vector <CLOCK> clockFrame;  // the frame used for Clock computation
+int clockPointer;   // the pointer to the Clock
 
+// creates an array for the frame, using the # of available frames
 void makeFrames(bool makeClock);
+// prints the frame after each algorithm finishes
 void print(string type, bool clk);
 
+// checks if a page already exists in the frame for OPT and LRU
 bool exists(int page);
 
+// returns the page to be replaced in the frame for LRU
 int LRURemoveIndex(int refInd);
+// does the LRU algorithm
 void LRU();
 
+// returns the page to be replaced in the frame for OPT
 int OPTRemoveIndex(int refInd);
+// does the Optimal algorithm
 void OPT();
 
+// checks if a page already exists in the frame for Clock
 bool clkExists(int page);
+// increments the clock pointer
 int getNextClock();
+// does the Clock algorithm
 void CLK();
 
 int main(int argc, char **argv) {
@@ -72,20 +82,24 @@ int main(int argc, char **argv) {
 
     int x;
     while(file >> x)
-        reference.push_back(x);
+        reference.push_back(x);     // fills the reference string into a vector
     
     cout << endl << "Reference String:" << endl;
     for(int i = 0; i < reference.size(); i++)
         cout << reference.at(i) << " ";
     cout << endl << endl;
 
+    
     makeFrames(false);
+    // does the OPT computation and prints it
     OPT();
 
     makeFrames(false);
+    // does the LRU computation and prints it
     LRU();
 
     makeFrames(true);
+    // does the Clock computation and prints it
     CLK();
 
     delete [] frame;
