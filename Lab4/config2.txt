@@ -1,0 +1,8 @@
+numProc = 4
+numResourcesTypes = 3
+available = <8 1 2>
+P0 <2 1 1> <4 2 3>
+P1 <2 3 1> <7 3 10>
+P2 <1 1 4> <5 2 13>
+P3 <1 4 2> <10 5 4>
+request 1 = <0 0 0>
